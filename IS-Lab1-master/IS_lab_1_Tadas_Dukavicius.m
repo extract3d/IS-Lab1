@@ -76,16 +76,100 @@ w1 = randn(1);
 w2 = randn(1);
 b = randn(1);
 
-while e ~= 0
-    for i = 1:length(T)
-        v = x1(i)*w1+x2(i)*w2+b;
+% calculate weighted sum with randomly generated parameters
+v1 = x1(1)*w1 + x2(1)*w2 + b;
+% calculate current output of the perceptron 
+disp(v1);
+if v1 > 0
+	y = 1;
+else
+	y = -1;
+end
+% calculate the error
+e1 = T(1) - y;
+
+% calculate wieghted sum with randomly generated parameters
+v2 = x1(2)*w1 + x2(2)*w2 + b;
+% calculate current output of the perceptron 
+if v2 > 0
+	y = 1;
+else
+	y = -1;
+end
+% calculate the error
+e2 = T(2) - y;
+
+% calculate wieghted sum with randomly generated parameters
+v3 = x1(3)*w1 + x2(3)*w2 + b;
+% calculate current output of the perceptron 
+if v3 > 0
+	y = 1;
+else
+	y = -1;
+end
+% calculate the error
+e3 = T(3) - y;
+
+% calculate wieghted sum with randomly generated parameters
+v4 = x1(4)*w1 + x2(4)*w2 + b;
+% calculate current output of the perceptron 
+if v4 > 0
+	y = 1;
+else
+	y = -1;
+end
+% calculate the error
+e4 = T(4) - y;
+
+% calculate wieghted sum with randomly generated parameters
+v5 = x1(5)*w1 + x2(5)*w2 + b;
+% calculate current output of the perceptron 
+if v5 > 0
+	y = 1;
+else
+	y = -1;
+end
+% calculate the error
+e5 = T(5) - y;
+
+% calculate the total error for these 5 inputs 
+total = abs(e1) + abs(e2) + abs(e3) + abs(e4) + abs(e5);
+
+% write training algorithm
+while total ~= 0
+    w1 = randn(1);
+    w2 = randn(1);
+    b = randn(1);
+    total = 0;
+    for i = 1:5       
+        % calculate wieghted sum
+        v = x1(i)*w1 + x2(i)*w2 + b;
         
+        % calculate current output of the perceptron
         if v > 0
             y = 1;
         else
             y = -1;
         end
         
+        % calculate the error
         e = T(i) - y;
+        
+        % calculate the total error
+        total = total + abs(e);
+        disp(total);
+        
+        % check if the classification was correct
+        if e == 0
+            disp("Classification was correct")
+        else
+            disp("Classification was incorrect")
+        end
+        %  update parameters using current inputs ant current error
+        n = 0.2;
+        w1 = w1 + n*e*x1(i);
+        w2 = w2 + n*e*x2(i);
+        b = b + n*e;       
     end
+    
 end
