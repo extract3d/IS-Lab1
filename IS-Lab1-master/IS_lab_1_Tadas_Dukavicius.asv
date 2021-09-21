@@ -69,21 +69,16 @@ P=[x1;x2];
 
 %Desired output vector
 T=[1;1;1;1;-1;-1;-1];
+%% train single perceptron with two inputs and one output
 
-x1_all=[hsv_value_A1 hsv_value_A2 hsv_value_A3 hsv_value_A4 hsv_value_A5 hsv_value_A6 hsv_value_A7 hsv_value_A8 hsv_value_A9 hsv_value_P1 hsv_value_P2 hsv_value_P3 hsv_value_P4];
-x2_all=[metric_A1 metric_A2 metric_A3 metric_A4 metric_A5 metric_A6 metric_A7 metric_A8 metric_A9 metric_P1 metric_P2 metric_P3 metric_P4];
-
-T_all=[1;1;1;1;1;1;1;1;1;-1;-1;-1;-1];
-
-train single perceptron with two inputs and one output
 % generate random initial values of w1, w2 and b
 w1 = randn(1);
 w2 = randn(1);
 b = randn(1);
-n = 0.1;
+n = 0.2;
 
-for k = 1:40
-    for i=1:length(T)
+for k = 20
+    for i=length(T)
         % calculate weighted sum with randomly generated parameters
         v = x1(i)*w1 + x2(i)*w2 + b;
         % calculate current output of the perceptron 
@@ -96,27 +91,65 @@ for k = 1:40
         e = T(i) - y;
 
         if e ~= 0
-            w1 = w1 + n*e*x1(i);
-            w2 = w2 + n*e*x2(i);
+            w1 = w1 + n*e*x1;
+            w2 = w2 + n*e*x2;
             b = b + n*e;
         end
     end
 end
 
-for j = 1:length(T_all)
-    v = x1_all(j)*w1 + x2_all(j)*w2 + b;
-    % calculate current output of the perceptron 
-    if v > 0
-        y = 1;
-    else
-        y = -1;
+for j = length(T)
+    v = x1(j)*w1 + x2(j)*w2 + b;
+        % calculate current output of the perceptron 
+        if v > 0
+            y = 1;
+        else
+            y = -1;
+        end
+        % calculate the error
+        e = T(i) - y;
+        if e ~= 0
+            disp("Classification was incorrect");
+        else
+            disp("Classification was correct");
+        end
+end
+% write training algorithm
+while total ~= 0
+    w1 = randn(1);
+    w2 = randn(1);
+    b = randn(1);
+
+    total = 0;
+    for i = 1:5       
+        % calculate wieghted sum
+        v = x1(i)*w1 + x2(i)*w2 + b;
+        
+        % calculate current output of the perceptron
+        if v > 0
+            y = 1;
+        else
+            y = -1;
+        end
+        
+        % calculate the error
+        e = T(i) - y;
+        
+        % calculate the total error
+        total = total + abs(e);
+        disp(total);
+        
+        % check if the classification was correct
+        if e == 0
+            disp("Classification was correct")
+        else
+            disp("Classification was incorrect")
+        end
+        %  update parameters using current inputs ant current error
+        n = 0.2;
+        w1 = w1 + n*e*x1(i);
+        w2 = w2 + n*e*x2(i);
+        b = b + n*e;       
     end
-    disp(y);
-    % calculate the error    
-    e = T_all(j) - y;
-    if e ~= 0
-        disp("Classification was incorrect");
-    else
-        disp("Classification was correct");
-    end
+    
 end
